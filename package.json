@@ -24,6 +24,7 @@
     "connect-timeout": "^1.7.0",
     "express": "^4.14.0",
     "ioredis": "^2.4.0",
+    "mailchimp-api-v3": "^1.6.0",
     "mongoose": "^4.6.3",
     "promise": "^7.1.1",
     "underscore": "^1.8.3"
