@@ -6,12 +6,12 @@ module.exports = {
         // GET
         // app.get('/api/price/:id', require('./endpoints/price.get'));
         // app.get('/api/token/:token', require('./endpoints/token.get'));
-        app.get('/api/subscribe/complete', require('./endpoints/subscribe-complete.get'));
 
         // POST
         // app.post('/api/token', require('./endpoints/token.post'));
         // app.post('/api/price/:id/token/:token', require('./endpoints/price.post'));
         app.post('/api/subscribe', require('./endpoints/subscribe.post'));
+        app.post('/api/subscribe/complete', require('./endpoints/subscribe-complete.post.js'));
     },
 
     write: function (res, data, status = 200) {
