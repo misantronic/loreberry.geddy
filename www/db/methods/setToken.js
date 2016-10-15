@@ -9,7 +9,7 @@ module.exports = function () {
         const random = Math.random().toString();
         const hash = crypto.createHash('sha1').update(date + random).digest('hex');
 
-        redis.set('token.'+ hash, hash, 60);
+        redis.set('token.'+ hash, hash, 60 * 60 * 24 * 7);
 
         resolve(hash);
     });

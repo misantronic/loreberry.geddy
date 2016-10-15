@@ -1,6 +1,5 @@
 const api = require('../api');
 const mailchimp = require('../../mailchimp');
-const setToken = require('../../db/methods/setToken');
 const getPrice = require('../../db/methods/getPrice');
 const setPrice = require('../../db/methods/setPrice');
 
@@ -23,18 +22,5 @@ module.exports = function (req, res) {
             }
 
             api.write(res, { success: true }, 200);
-
-            // setToken().then(token => {
-            //     // Get priceModel
-            //     getPrice().then(function (price) {
-            //         // Update price
-            //         price.token = token;
-            //         price.current_price += 0.1;
-            //
-            //         setPrice(price.id, price)
-            //             .then(data => api.write(res, data, 200))
-            //             .catch(err => api.write(res, err, 500));
-            //     });
-            // });
         });
 };
