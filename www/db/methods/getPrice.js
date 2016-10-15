@@ -1,5 +1,5 @@
 var Promise = require('promise');
-var PriceModel = require('./Price');
+var PriceModel = require('./../models/Price');
 
 module.exports = function (id) {
     return new Promise(function (resolve, reject) {
@@ -7,8 +7,6 @@ module.exports = function (id) {
             if (err) {
                 return reject(err, 500);
             }
-
-            console.log(priceModel);
 
             resolve(priceModel, 200);
         });

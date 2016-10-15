@@ -16,6 +16,7 @@ app.use(express.static(publicPath));
 
 // parse application/json
 app.use(bodyParser.json({ limit: '5mb' }));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(function (req, res, next) {
     if (!req.timedout) next();
