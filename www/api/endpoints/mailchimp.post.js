@@ -23,13 +23,13 @@ module.exports = function (req, res) {
         .then(tokenFound => {
             if (tokenFound) {
                 if (type === 'subscribe') {
-                    updatePrice(-0.1, 1, { token: token })
+                    updatePrice(-1, 1, { token: token })
                         .then(() => api.write(res, { success: true }))
                         .catch(err => api.write(res, err, 500));
                 }
 
                 if (type === 'unsubscribe') {
-                    updatePrice(0.1, -1)
+                    updatePrice(1, -1)
                         .then(() => {
                             setToken(email, token)
                                 .then(() => api.write(res, { success: true }))
