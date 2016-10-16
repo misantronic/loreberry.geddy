@@ -5,7 +5,7 @@ function Embed(config) {
         this._config.$el = $(this._config.el);
     }
 
-    if(this._config.api && this._config.baseUrl) {
+    if (this._config.api && this._config.baseUrl) {
         this._config.api = this._config.baseUrl + this._config.api;
     }
 }
@@ -36,6 +36,7 @@ Embed.prototype = {
 
     init: function () {
         $.when(
+            this.loadStyles(),
             this.loadTemplates(),
             this.getPrice()
         ).done(this._onLoaded.bind(this));
@@ -56,6 +57,14 @@ Embed.prototype = {
 
                 return price;
             }.bind(this));
+    },
+
+    loadStyles: function () {
+        $('.embed-styles').remove();
+
+        $.get(this._config.baseUrl + '/embed.css').then(function (css) {
+            this._config.$el.after('<style class="embed-styles" type="text/css">'+ css +'</style>')
+        }.bind(this))
     },
 
     loadTemplates: function () {
