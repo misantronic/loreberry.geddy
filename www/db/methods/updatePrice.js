@@ -1,4 +1,6 @@
 const _ = require('underscore');
+const getPrice = require('./getPrice');
+const setPrice = require('./setPrice');
 
 module.exports = function (addPrice, addShares, addObj = {}) {
     return new Promise(function (resolve, reject) {
