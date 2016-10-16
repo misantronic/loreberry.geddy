@@ -24,5 +24,6 @@ module.exports = function (req, res) {
             }
 
             api.write(res, { success: true }, 200);
-        });
+        })
+        .catch(err => api.write(res, err, 500));
 };
