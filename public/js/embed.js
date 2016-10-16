@@ -156,6 +156,7 @@ Embed.prototype = {
 
                     // Update properties
                     this.renderPrices();
+                    this.polling();
                 }
             }.bind(this))
             .fail(this.polling.bind(this))
