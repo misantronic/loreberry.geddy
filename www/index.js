@@ -1,8 +1,9 @@
-var express     = require('express');
-var timeout     = require('connect-timeout');
+var express = require('express');
+var timeout = require('connect-timeout');
 var compression = require('compression');
-var bodyParser  = require('body-parser');
-var api         = require('./api/api');
+var bodyParser = require('body-parser');
+var api = require('./api/api');
+var allowCors = require('./allowCors');
 
 var publicPath = __dirname + '/../public';
 
@@ -10,18 +11,14 @@ var app = express();
 
 app.set('port', (process.env.PORT || 5000));
 
+app.use(allowCors);
+
 app.use(timeout('60s'));
 app.use(compression());
 app.use(express.static(publicPath));
 
-app.use(function (req, res, next) {
-    res.header('Access-Control-Allow-Origin', '*');
-
-    next();
-});
-
 // parse application/json
-app.use(bodyParser.json({ limit: '5mb' }));
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(function (req, res, next) {
