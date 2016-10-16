@@ -4,6 +4,10 @@ function Embed(config) {
     if (this._config.el) {
         this._config.$el = $(this._config.el);
     }
+
+    if(this._config.api && this._config.baseUrl) {
+        this._config.api = this._config.baseUrl +'/'+ this._config.api;
+    }
 }
 
 Embed.prototype = {
