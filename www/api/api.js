@@ -14,8 +14,8 @@ module.exports = {
     },
 
     write: function (res, data, status = 200) {
-        if(data instanceof Error) {
-            data = data.toString();
+        if (data instanceof Error) {
+            data = { error: data.toString() };
         }
 
         res.writeHead(status, { "Content-Type": "application/json" });
