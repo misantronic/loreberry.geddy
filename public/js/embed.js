@@ -23,7 +23,7 @@ Embed.prototype.init = function () {
     console.log(this);
 };
 
-Embed.prototype.refreshPrice = function () {
+Embed.prototype.renderPrices = function () {
     var price = this._price;
 
     var p = Math.round((price.start_price - price.current_price) / (price.start_price - price.min_price) * 100);
@@ -66,7 +66,7 @@ Embed.prototype.render = function () {
 
     this.config.$el.html($wrapper);
 
-    this.refreshPrice();
+    this.renderPrices();
 };
 
 Embed.prototype.polling = function () {
@@ -76,7 +76,7 @@ Embed.prototype.polling = function () {
                 this._price = response.data;
 
                 // Update properties
-                this.refreshPrice();
+                this.renderPrices();
             }
         }.bind(this))
         .fail(this.polling.bind(this))
