@@ -60,6 +60,8 @@
         font-size: 14px;
         opacity: 1;
         transition: opacity 0.3s linear; }
+        .embed-wrapper .newsletter > .form .form-control[type="text"], .embed-wrapper .newsletter > .form .form-control[type="email"] {
+          width: 20px; }
         .embed-wrapper .newsletter > .form .form-control:focus {
           outline: none; }
       .embed-wrapper .newsletter > .form .form-control.email {

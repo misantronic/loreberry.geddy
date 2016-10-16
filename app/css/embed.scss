@@ -88,6 +88,11 @@
 
 				transition: opacity 0.3s linear;
 
+				&[type="text"],
+				&[type="email"] {
+					width: 20px;
+				}
+
 				&:focus {
 					outline: none;
 				}
