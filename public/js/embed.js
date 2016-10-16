@@ -1,90 +1,111 @@
 function Embed(config) {
-    this.config = config;
+    this._config = config;
 
-    if(this.config.el) {
-        this.config.$el = $(this.config.el);
+    if (this._config.el) {
+        this._config.$el = $(this._config.el);
     }
 }
 
-Embed.prototype.config = {
-    id: Number,
-    api: String
-};
+Embed.prototype = {
+    _config: {
+        id: Number,
+        api: String
+    },
 
-Embed.prototype._price = null;
-Embed.prototype._templates = {};
+    _price: null,
+    _templates: {
+        status: '',
+        newsletter: ''
+    },
 
-Embed.prototype.init = function () {
-    $.when(
-        this.loadTemplates(),
-        this.getPrice()
-    ).done(this._onLoaded.bind(this));
+    _ui: {
+        shares: 'js-shares',
+        currentPrice: '.js-current-price',
+        startPrice: '.js-start-price',
+        minPrice: '.js-min-price',
+        barProgress: '.js-bar-progress'
+    },
 
-    console.log(this);
-};
+    init: function () {
+        $.when(
+            this.loadTemplates(),
+            this.getPrice()
+        ).done(this._onLoaded.bind(this));
 
-Embed.prototype.renderPrices = function () {
-    var price = this._price;
+        console.log(this);
+    },
 
-    var p = Math.round((price.start_price - price.current_price) / (price.start_price - price.min_price) * 100);
+    renderPrices: function () {
+        var price = this._price;
 
-    this.config.$el.find('.js-shares').text(price.shares);
-    this.config.$el.find('.js-current-price').text(price.current_price +' €');
-    this.config.$el.find('.js-start-price').text(price.start_price +' €');
-    this.config.$el.find('.js-min-price').text(price.min_price +' €');
-    this.config.$el.find('.js-bar-progress').width(p +'%');
-};
+        var p = Math.round((price.start_price - price.current_price) / (price.start_price - price.min_price) * 100);
 
-Embed.prototype.getPrice = function (id) {
-    if (!id) {
-        id = this.config.id;
-    }
+        this._ui.shares.text(price.shares);
+        this._ui.currentPrice.text(price.current_price + ' €');
+        this._ui.startPrice.text(price.start_price + ' €');
+        this._ui.minPrice.text(price.min_price + ' €');
+        this._ui.barProgress.width(p + '%');
+    },
 
-    return $.get(this.config.api + '/price/' + id)
-        .then(function (price) {
-            this._price = price;
+    getPrice: function (id) {
+        if (!id) {
+            id = this._config.id;
+        }
 
-            return price;
+        return $.get(this._config.api + '/price/' + id)
+            .then(function (price) {
+                this._price = price;
+
+                return price;
+            }.bind(this));
+    },
+
+    loadTemplates: function () {
+        this._templates = {};
+
+        return $.when(
+            $.get('./tpl/status.ejs'),
+            $.get('./tpl/newsletter.ejs')
+        ).done(function (statusArr, newsletterArr) {
+            this._templates.status = _.template(statusArr[0]);
+            this._templates.newsletter = _.template(newsletterArr[0]);
         }.bind(this));
-};
+    },
 
-Embed.prototype.loadTemplates = function () {
-    this._templates = {};
+    render: function () {
+        var status = this._templates.status(this._price);
+        var newsletter = this._templates.newsletter();
 
-    return $.when(
-        $.get('./tpl/status.ejs')
-    ).then(function (statusTpl) {
-        this._templates.status = _.template(statusTpl);
-    }.bind(this));
-};
+        var $wrapper = $('<div class="embed-wrapper"></div>');
 
-Embed.prototype.render = function () {
-    var status = this._templates.status(this._price);
-    var $wrapper = $('<div class="embed-wrapper"></div>');
+        $wrapper.append(status + newsletter);
 
-    $wrapper.append(status);
+        this._config.$el.html($wrapper);
 
-    this.config.$el.html($wrapper);
+        _.each(this._ui, function (selector, name) {
+            this._ui[name] = $(selector);
+        }, this);
 
-    this.renderPrices();
-};
+        this.renderPrices();
+    },
 
-Embed.prototype.polling = function () {
-    return $.get(this.config.api + '/polling')
-        .done(function (response) {
-            if (response.event === 'updatePrice') {
-                this._price = response.data;
+    polling: function () {
+        return $.get(this._config.api + '/polling')
+            .done(function (response) {
+                if (response.event === 'updatePrice') {
+                    this._price = response.data;
 
-                // Update properties
-                this.renderPrices();
-            }
-        }.bind(this))
-        .fail(this.polling.bind(this))
-};
+                    // Update properties
+                    this.renderPrices();
+                }
+            }.bind(this))
+            .fail(this.polling.bind(this))
+    },
 
-Embed.prototype._onLoaded = function () {
-    this.render();
-    this.polling();
+    _onLoaded: function () {
+        this.render();
+        this.polling();
+    }
 };
 
 function onInit() {
