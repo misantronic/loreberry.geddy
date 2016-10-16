@@ -10,6 +10,8 @@ module.exports = function (req, res) {
         return api.write(res, { error: 'Missing payload' }, 500);
     }
 
+    console.log('POST /api/subscribe', body);
+
     const email = body.email;
     const firstname = body.firstname || '';
     const lastname = body.lastname || '';

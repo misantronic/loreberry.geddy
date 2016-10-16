@@ -13,6 +13,8 @@ module.exports = function (req, res) {
         return api.write(res, { error: 'Missing payload' }, 500);
     }
 
+    console.log('POST /api/mailchimp', body);
+
     if (type === 'subscribe') {
         const token = body.data.merges.TOKEN;
 
