@@ -1,0 +1,33 @@
+.embed-wrapper {
+  font-family: sans-serif;
+  width: 100%; }
+  .embed-wrapper .current-price {
+    text-align: center;
+    font-size: 32px;
+    margin-bottom: 10px; }
+  .embed-wrapper .shares {
+    text-align: center;
+    margin-bottom: 10px; }
+  .embed-wrapper .progress {
+    display: flex; }
+    .embed-wrapper .progress .bar {
+      margin: 0 10px;
+      flex: 1;
+      background: #EEE; }
+      .embed-wrapper .progress .bar .bar-value {
+        text-align: center;
+        background: #FFF; }
+      .embed-wrapper .progress .bar .bar-progress {
+        width: 0;
+        height: 40px;
+        background: #CCC; }
+    .embed-wrapper .progress .start-price,
+    .embed-wrapper .progress .min-price {
+      display: flex;
+      align-items: center;
+      padding: 5px;
+      flex: 0 0 60px; }
+    .embed-wrapper .progress .min-price {
+      justify-content: flex-end; }
+
+/*# sourceMappingURL=embed.css.map */

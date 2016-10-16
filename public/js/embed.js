@@ -1,5 +1,9 @@
 function Embed(config) {
     this.config = config;
+
+    if(this.config.el) {
+        this.config.$el = $(this.config.el);
+    }
 }
 
 Embed.prototype.config = {
@@ -48,8 +52,11 @@ Embed.prototype.loadTemplates = function () {
 
 Embed.prototype.render = function () {
     var status = this._templates.status(this._price);
+    var $wrapper = $('<div class="embed-wrapper"></div>');
 
-    console.log(status);
+    $wrapper.append(status);
+
+    this.config.$el.html($wrapper);
 };
 
 Embed.prototype.polling = function () {

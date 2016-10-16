@@ -1,0 +1,49 @@
+.embed-wrapper {
+	font-family: sans-serif;
+	width: 100%;
+
+	.current-price {
+		text-align: center;
+		font-size: 32px;
+		margin-bottom: 10px;
+	}
+
+	.shares {
+		text-align: center;
+		margin-bottom: 10px;
+	}
+
+	.progress {
+		display: flex;
+
+		.bar {
+			margin: 0 10px;
+			flex: 1;
+			background: #EEE;
+
+			.bar-value {
+				text-align: center;
+				background: #FFF;
+			}
+
+			.bar-progress {
+				width: 0;
+				height: 40px;
+
+				background: #CCC;
+			}
+		}
+
+		.start-price,
+		.min-price {
+			display: flex;
+			align-items: center;
+			padding: 5px;
+			flex: 0 0 60px;
+		}
+
+		.min-price {
+			justify-content: flex-end;
+		}
+	}
+}
