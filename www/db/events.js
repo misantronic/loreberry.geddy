@@ -1,3 +1,5 @@
+var pool = {};
+
 module.exports = {
     pool: {},
 
@@ -10,6 +12,6 @@ module.exports = {
     },
 
     listenTo: function (event, fn) {
-        this.pool[event] = fn;
+        pool[event] = fn;
     }
 };
