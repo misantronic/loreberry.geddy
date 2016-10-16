@@ -29,6 +29,8 @@ module.exports = function (req, res) {
                             api.write(res, { success: true });
                         })
                         .catch(err => api.write(res, err, 500));
+                } else {
+                    api.write(res, { error: 'Token "'+ dbToken +'" not found.' }, 500)
                 }
             })
             .catch(err => api.write(res, err, 500));
