@@ -16,6 +16,10 @@ module.exports = function (req, res) {
     const firstname = body.firstname || '';
     const lastname = body.lastname || '';
 
+    if (!email) {
+        return api.write(res, { error: 'Missing parameter "email"' }, 500);
+    }
+
     mailchimp.list.subscribe(email, firstname, lastname)
         .then(result => {
             // Only succeed when there are new members in the list...

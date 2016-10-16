@@ -14,16 +14,19 @@ Embed.prototype = {
 
     _price: null,
     _templates: {
-        status: '',
-        newsletter: ''
+        status: null,
+        newsletter: null
     },
 
     _ui: {
-        shares: 'js-shares',
+        shares: '.js-shares',
         currentPrice: '.js-current-price',
         startPrice: '.js-start-price',
         minPrice: '.js-min-price',
-        barProgress: '.js-bar-progress'
+        barProgress: '.js-bar-progress',
+        newsletter: '.js-newsletter',
+        form: '.js-form',
+        textError: '.js-text-error'
     },
 
     init: function () {
@@ -33,18 +36,8 @@ Embed.prototype = {
         ).done(this._onLoaded.bind(this));
 
         console.log(this);
-    },
 
-    renderPrices: function () {
-        var price = this._price;
-
-        var p = Math.round((price.start_price - price.current_price) / (price.start_price - price.min_price) * 100);
-
-        this._ui.shares.text(price.shares);
-        this._ui.currentPrice.text(price.current_price + ' €');
-        this._ui.startPrice.text(price.start_price + ' €');
-        this._ui.minPrice.text(price.min_price + ' €');
-        this._ui.barProgress.width(p + '%');
+        return this;
     },
 
     getPrice: function (id) {
@@ -63,30 +56,95 @@ Embed.prototype = {
     loadTemplates: function () {
         this._templates = {};
 
+        const parseTemplate = function (key, arr, context) {
+            this._templates[key] = _.template(arr[0]);
+            this._templates[key].context = context;
+        }.bind(this);
+
         return $.when(
             $.get('./tpl/status.ejs'),
             $.get('./tpl/newsletter.ejs')
         ).done(function (statusArr, newsletterArr) {
-            this._templates.status = _.template(statusArr[0]);
-            this._templates.newsletter = _.template(newsletterArr[0]);
+            parseTemplate('status', statusArr, '_price');
+            parseTemplate('newsletter', newsletterArr);
         }.bind(this));
     },
 
     render: function () {
-        var status = this._templates.status(this._price);
-        var newsletter = this._templates.newsletter();
-
         var $wrapper = $('<div class="embed-wrapper"></div>');
 
-        $wrapper.append(status + newsletter);
+        // Render templates
+        var rendered = _.map(this._templates, function (template) {
+            const context = this[template.context] || {};
+
+            return template(context);
+        }, this);
+
+        $wrapper.append(rendered);
 
         this._config.$el.html($wrapper);
 
+        // Create UI
         _.each(this._ui, function (selector, name) {
             this._ui[name] = $(selector);
         }, this);
 
+        // Bind data
         this.renderPrices();
+
+        _.defer(function () {
+            // Show wrapper
+            $wrapper.addClass('is-show')
+        }.bind(this));
+
+        // Initialize form
+        this.initForm();
+    },
+
+    renderPrices: function () {
+        var price = this._price;
+
+        var p = Math.round((price.start_price - price.current_price) / (price.start_price - price.min_price) * 100);
+
+        this._ui.shares.text(price.shares);
+        this._ui.startPrice.text(price.start_price + ' €');
+        this._ui.minPrice.text(price.min_price + ' €');
+        this._ui.currentPrice.text(price.current_price + ' €');
+
+        _.delay(function () {
+            this._ui.barProgress.width(p + '%');
+        }.bind(this), 750);
+    },
+
+    initForm: function () {
+        this._ui.form
+            .off('submit')
+            .on('submit', function () {
+                this._ui.newsletter
+                    .removeClass('is-error is-success')
+                    .addClass('is-loading');
+
+                $.post(this._config.api + '/subscribe', this._ui.form.serializeArray())
+                    .done(function (res) {
+                        if (res.success) {
+                            this._ui.newsletter.addClass('is-success');
+                        }
+                    }.bind(this))
+                    .always(function (xhr) {
+                        var res = xhr.responseJSON;
+
+                        this._ui.newsletter.removeClass('is-loading');
+
+                        this._ui.textError.text('');
+
+                        if (res.error) {
+                            this._ui.textError.text(res.error);
+                            this._ui.newsletter.addClass('is-error');
+                        }
+                    }.bind(this));
+
+                return false;
+            }.bind(this));
     },
 
     polling: function () {
