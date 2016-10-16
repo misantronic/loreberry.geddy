@@ -20,7 +20,7 @@ module.exports = function (req, res) {
         .then(result => {
             // Only succeed when there are new members in the list...
             if (result.new_members.length === 0) {
-                return api.write(res, null, 500);
+                return api.write(res, { error: 'You are already registered.' }, 500);
             }
 
             api.write(res, { success: true }, 200);
