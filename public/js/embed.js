@@ -23,8 +23,16 @@ Embed.prototype.init = function () {
     console.log(this);
 };
 
-Embed.prototype.refresh = function () {
-    this.getPrice().done(this._onLoaded.bind(this));
+Embed.prototype.refreshPrice = function () {
+    var price = this._price;
+
+    var p = Math.round((price.start_price - price.current_price) / (price.start_price - price.min_price) * 100);
+
+    this.config.$el.find('.js-shares').text(price.shares);
+    this.config.$el.find('.js-current-price').text(price.current_price +' €');
+    this.config.$el.find('.js-start-price').text(price.start_price +' €');
+    this.config.$el.find('.js-min-price').text(price.min_price +' €');
+    this.config.$el.find('.js-bar-progress').width(p +'%');
 };
 
 Embed.prototype.getPrice = function (id) {
@@ -57,13 +65,18 @@ Embed.prototype.render = function () {
     $wrapper.append(status);
 
     this.config.$el.html($wrapper);
+
+    this.refreshPrice();
 };
 
 Embed.prototype.polling = function () {
     return $.get(this.config.api + '/polling')
         .done(function (response) {
             if (response.event === 'updatePrice') {
-                this.refresh();
+                this._price = response.data;
+
+                // Update properties
+                this.refreshPrice();
             }
         }.bind(this))
         .fail(this.polling.bind(this))

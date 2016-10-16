@@ -1,16 +1,13 @@
-<% var p = Math.round((start_price - current_price) / (start_price - min_price) * 100) %>
 <div class="status">
-	<div class="current-price">
-		<%- current_price %> €
-	</div>
+	<div class="current-price js-current-price"></div>
 	<div class="shares">
-		<span class="num-shares"><%- shares %></span> total shares
+		<span class="num-shares js-shares"></span> total shares
 	</div>
 	<div class="progress">
-		<div class="start-price"><%- start_price %> €</div>
+		<div class="start-price js-start-price"></div>
 		<div class="bar">
-			<div class="bar-progress" style="width: <%- p %>%"></div>
+			<div class="bar-progress js-bar-progress"></div>
 		</div>
-		<div class="min-price"><%- min_price %> €</div>
+		<div class="min-price js-min-price"></div>
 	</div>
 </div>
