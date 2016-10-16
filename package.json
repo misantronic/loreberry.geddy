@@ -5,7 +5,6 @@
   "main": "index.js",
   "scripts": {
     "start": "npm run build && node www/index & node www/keepalive",
-    "www": "node $NODE_DEBUG_OPTION www/index",
     "build": "./build.sh"
   },
   "repository": {
