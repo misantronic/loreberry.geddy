@@ -14,6 +14,6 @@ module.exports = function (value, key = null) {
 
         redis.set('token.'+ key, value, 60 * 60 * 24 * 30);
 
-        resolve({ [key]: value });
+        resolve(key, value);
     });
 };
