@@ -14,8 +14,10 @@ app.use(timeout('60s'));
 app.use(compression());
 app.use(express.static(publicPath));
 
-app.use(function (req, res) {
+app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
+
+    next();
 });
 
 // parse application/json
