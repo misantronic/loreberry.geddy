@@ -18,10 +18,10 @@ module.exports = function (req, res) {
 
     const token = body.data.merges.TOKEN;
 
-    if (type === 'subscribe') {
-        getToken(token)
-            .then(dbToken => {
-                if (dbToken) {
+    getToken(token)
+        .then(dbToken => {
+            if (dbToken) {
+                if (type === 'subscribe') {
                     updatePrice(-0.1, 1, { token: dbToken })
                         .then(() => {
                             delToken(dbToken);
@@ -29,20 +29,20 @@ module.exports = function (req, res) {
                             api.write(res, { success: true });
                         })
                         .catch(err => api.write(res, err, 500));
-                } else {
-                    api.write(res, { error: 'Token "'+ dbToken +'" not found.' }, 500)
                 }
-            })
-            .catch(err => api.write(res, err, 500));
-    }
 
-    if (type === 'unsubscribe') {
-        updatePrice(0.1, -1)
-            .then(() => {
-                setToken(token)
-                    .then(() => api.write(res, { success: true }))
-                    .catch(err => api.write(res, err, 500));
-            })
-            .catch(err => api.write(res, err, 500));
-    }
+                if (type === 'unsubscribe') {
+                    updatePrice(0.1, -1)
+                        .then(() => {
+                            setToken(token)
+                                .then(() => api.write(res, { success: true }))
+                                .catch(err => api.write(res, err, 500));
+                        })
+                        .catch(err => api.write(res, err, 500));
+                }
+            } else {
+                api.write(res, { error: 'Token "' + dbToken + '" not found.' }, 500)
+            }
+        })
+        .catch(err => api.write(res, err, 500));
 };

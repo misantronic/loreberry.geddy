@@ -12,7 +12,7 @@ module.exports = function (token = null) {
             token = crypto.createHash('sha1').update(date + random).digest('hex');
         }
 
-        redis.set('token.'+ token, token, 60 * 60 * 24 * 7);
+        redis.set('token.'+ token, token, 60 * 60 * 24 * 30);
 
         resolve(token);
     });
