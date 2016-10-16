@@ -1,6 +1,6 @@
 const api = require('../api');
 const setToken = require('../../db/methods/setToken');
-const getToken = require('../../db/methods/getToken');
+const validateToken = require('../../db/methods/validateToken');
 const delToken = require('../../db/methods/delToken');
 const getPrice = require('../../db/methods/getPrice');
 const setPrice = require('../../db/methods/setPrice');
@@ -17,14 +17,15 @@ module.exports = function (req, res) {
     console.log('POST /api/mailchimp', body);
 
     const token = body.data.merges.TOKEN;
+    const email = body.data.email;
 
-    getToken(token)
-        .then(dbToken => {
-            if (dbToken) {
+    validateToken(token, email)
+        .then(tokenFound => {
+            if (tokenFound) {
                 if (type === 'subscribe') {
-                    updatePrice(-0.1, 1, { token: dbToken })
+                    updatePrice(-0.1, 1, { token: token })
                         .then(() => {
-                            delToken(dbToken);
+                            delToken(token);
 
                             api.write(res, { success: true });
                         })
@@ -34,14 +35,14 @@ module.exports = function (req, res) {
                 if (type === 'unsubscribe') {
                     updatePrice(0.1, -1)
                         .then(() => {
-                            setToken(token)
+                            setToken(email, token)
                                 .then(() => api.write(res, { success: true }))
                                 .catch(err => api.write(res, err, 500));
                         })
                         .catch(err => api.write(res, err, 500));
                 }
             } else {
-                api.write(res, { error: 'Token "' + dbToken + '" not found.' }, 500)
+                api.write(res, { error: 'Token "' + token + '" not found.' }, 500)
             }
         })
         .catch(err => api.write(res, err, 500));

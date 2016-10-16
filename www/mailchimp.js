@@ -8,7 +8,7 @@ module.exports = {
     list: {
         subscribe: function (email, firstname, lastname) {
             return new Promise(function (resolve, reject) {
-                setToken().then(function (token) {
+                setToken(email).then(function (token) {
                     mailchimp.post({
                         path: '/lists/' + process.env.MAILCHIMP_LIST
                     }, {
