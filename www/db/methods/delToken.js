@@ -3,7 +3,7 @@ const redis = require('./../redis');
 
 module.exports = function (token) {
     return new Promise(function (resolve) {
-        redis.del(token);
+        redis.del('token.' + token);
 
         resolve(true);
     });
