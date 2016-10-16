@@ -6,6 +6,6 @@ module.exports = function (req, res) {
         api.write(res, {
             event: 'updatePrice',
             data: price
-        }, 200);
+        });
     });
 };
