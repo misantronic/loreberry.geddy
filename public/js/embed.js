@@ -130,10 +130,8 @@ Embed.prototype = {
                             this._ui.newsletter.addClass('is-success');
                         }
                     }.bind(this))
-                    .always(function (xhr) {
-                        var res = xhr.responseJSON;
-
-                        this._ui.newsletter.removeClass('is-loading');
+                    .fail(function (xhr) {
+                        var res = xhr.responseJSON || {};
 
                         this._ui.textError.text('');
 
@@ -141,6 +139,9 @@ Embed.prototype = {
                             this._ui.textError.text(res.error);
                             this._ui.newsletter.addClass('is-error');
                         }
+                    }.bind(this))
+                    .always(function () {
+                        this._ui.newsletter.removeClass('is-loading');
                     }.bind(this));
 
                 return false;
