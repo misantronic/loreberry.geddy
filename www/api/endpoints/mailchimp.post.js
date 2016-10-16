@@ -1,4 +1,5 @@
 const api = require('../api');
+const setToken = require('../../db/methods/setToken');
 const getToken = require('../../db/methods/getToken');
 const delToken = require('../../db/methods/delToken');
 const getPrice = require('../../db/methods/getPrice');
@@ -15,9 +16,9 @@ module.exports = function (req, res) {
 
     console.log('POST /api/mailchimp', body);
 
-    if (type === 'subscribe') {
-        const token = body.data.merges.TOKEN;
+    const token = body.data.merges.TOKEN;
 
+    if (type === 'subscribe') {
         getToken(token)
             .then(dbToken => {
                 if (dbToken) {
@@ -35,7 +36,11 @@ module.exports = function (req, res) {
 
     if (type === 'unsubscribe') {
         updatePrice(0.1, -1)
-            .then(() => api.write(res, { success: true }))
+            .then(() => {
+                setToken(token)
+                    .then(() => api.write(res, { success: true }))
+                    .catch(err => api.write(res, err, 500));
+            })
             .catch(err => api.write(res, err, 500));
     }
 };
