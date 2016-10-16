@@ -6,7 +6,7 @@ function Embed(config) {
     }
 
     if(this._config.api && this._config.baseUrl) {
-        this._config.api = this._config.baseUrl +'/'+ this._config.api;
+        this._config.api = this._config.baseUrl + this._config.api;
     }
 }
 
