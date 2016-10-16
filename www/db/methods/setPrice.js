@@ -2,7 +2,7 @@ var Promise = require('promise');
 var _ = require('underscore');
 var PriceModel = require('./../models/Price');
 
-module.exports = function (price = { id: null, start_price: null, final_price: null, current_price: null, shares: null }) {
+module.exports = function (price = { id: null, start_price: null, min_price: null, current_price: null, shares: null }) {
     return new Promise(function (resolve, reject) {
 
         var $setPrice = {};
@@ -11,8 +11,8 @@ module.exports = function (price = { id: null, start_price: null, final_price: n
             $setPrice.start_price = price.start_price
         }
 
-        if (price.final_price !== null) {
-            $setPrice.final_price = price.final_price
+        if (price.min_price !== null) {
+            $setPrice.min_price = price.min_price
         }
 
         if (price.current_price !== null) {
