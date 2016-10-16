@@ -1,6 +1,7 @@
 const _ = require('underscore');
 const getPrice = require('./getPrice');
 const setPrice = require('./setPrice');
+const events = require('../events');
 
 module.exports = function (addPrice, addShares, addObj = {}) {
     return new Promise(function (resolve, reject) {
@@ -12,7 +13,11 @@ module.exports = function (addPrice, addShares, addObj = {}) {
                 _.extend(price, addObj);
 
                 setPrice(price)
-                    .then(resolve)
+                    .then(data => {
+                        resolve(data);
+
+                        events.trigger('updatePrice', price);
+                    })
                     .catch(reject);
             })
             .catch(reject);

@@ -4,6 +4,7 @@ require('./../db/redis');
 module.exports = {
     init: function (app) {
         // GET
+        app.get('/api/polling', require('./endpoints/polling.get'));
         app.get('/api/price/:id', require('./endpoints/price.get'));
         app.get('/api/mailchimp', require('./endpoints/mailchimp.get'));
 
