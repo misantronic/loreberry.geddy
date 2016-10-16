@@ -2,18 +2,18 @@ const Promise = require('promise');
 const crypto = require('crypto');
 const redis = require('./../redis');
 
-module.exports = function (value, key = null) {
+module.exports = function (value, token = null) {
     return new Promise(function (resolve) {
-        if(key === null) {
+        if(token === null) {
             // Create hash
             const date = (new Date()).valueOf().toString();
             const random = Math.random().toString();
 
-            key = crypto.createHash('sha1').update(date + random).digest('hex');
+            token = crypto.createHash('sha1').update(date + random).digest('hex');
         }
 
-        redis.set('token.'+ key, value, 60 * 60 * 24 * 30);
+        redis.set('token.'+ token, value, 60 * 60 * 24 * 30);
 
-        resolve(key, value);
+        resolve(token, value);
     });
 };

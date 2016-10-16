@@ -24,11 +24,7 @@ module.exports = function (req, res) {
             if (tokenFound) {
                 if (type === 'subscribe') {
                     updatePrice(-0.1, 1, { token: token })
-                        .then(() => {
-                            delToken(token);
-
-                            api.write(res, { success: true });
-                        })
+                        .then(() => api.write(res, { success: true }))
                         .catch(err => api.write(res, err, 500));
                 }
 
