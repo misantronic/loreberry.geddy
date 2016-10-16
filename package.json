@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node www/index & node www/keepalive",
+    "start": "npm run build && node www/index & node www/keepalive",
     "www": "node $NODE_DEBUG_OPTION www/index",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "./build.sh"
   },
   "repository": {
     "type": "git",
@@ -29,6 +29,7 @@
     "mailchimp-api-v3": "^1.6.0",
     "mongoose": "^4.6.3",
     "promise": "^7.1.1",
+    "uglify-js": "^2.7.3",
     "underscore": "^1.8.3"
   },
   "engines": {
