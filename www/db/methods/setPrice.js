@@ -2,7 +2,7 @@ var Promise = require('promise');
 var _ = require('underscore');
 var PriceModel = require('./../models/Price');
 
-module.exports = function (id, price = { id: null, start_price: null, final_price: null, current_price: null, shares: null }) {
+module.exports = function (price = { id: null, start_price: null, final_price: null, current_price: null, shares: null }) {
     return new Promise(function (resolve, reject) {
 
         var $setPrice = {};
@@ -26,7 +26,7 @@ module.exports = function (id, price = { id: null, start_price: null, final_pric
         console.log('Mongo: setPrice', $setPrice);
 
         PriceModel.findByIdAndUpdate(
-            id,
+            price.id,
             { $set: $setPrice },
             function (err) {
                 if (err) {

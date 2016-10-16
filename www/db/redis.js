@@ -59,5 +59,9 @@ module.exports = {
         }
 
         return this;
+    },
+
+    del: function (key) {
+        redis.del(key);
     }
 };

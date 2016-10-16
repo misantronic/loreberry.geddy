@@ -11,7 +11,7 @@ module.exports = {
         // app.post('/api/token', require('./endpoints/token.post'));
         // app.post('/api/price/:id/token/:token', require('./endpoints/price.post'));
         app.post('/api/subscribe', require('./endpoints/subscribe.post'));
-        app.post('/api/subscribe/complete', require('./endpoints/subscribe-complete.post.js'));
+        app.post('/api/mailchimp', require('./endpoints/mailchimp.post.js'));
     },
 
     write: function (res, data, status = 200) {
