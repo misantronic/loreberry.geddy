@@ -3,6 +3,7 @@ const getToken = require('../../db/methods/getToken');
 const delToken = require('../../db/methods/delToken');
 const getPrice = require('../../db/methods/getPrice');
 const setPrice = require('../../db/methods/setPrice');
+const updatePrice = require('../../db/methods/updatePrice');
 
 module.exports = function (req, res) {
     const body = req.body || {};
@@ -18,23 +19,21 @@ module.exports = function (req, res) {
         getToken(token)
             .then(dbToken => {
                 if (dbToken) {
-                    getPrice()
-                        .then(price => {
-                            price.current_price -= 0.1;
-                            price.token = dbToken;
-                            price.shares += 1;
+                    updatePrice(-0.1, 1, { token: dbToken })
+                        .then(() => {
+                            delToken(dbToken);
 
-                            setPrice(price)
-                                .then(() => {
-                                    delToken(dbToken);
-
-                                    api.write(res, { success: true });
-                                })
-                                .catch(err => api.write(res, err, 500));
+                            api.write(res, { success: true });
                         })
                         .catch(err => api.write(res, err, 500));
                 }
             })
+            .catch(err => api.write(res, err, 500));
+    }
+
+    if (type === 'unsubscribe') {
+        updatePrice(0.1, -1)
+            .then(() => api.write(res, { success: true }))
             .catch(err => api.write(res, err, 500));
     }
 };
