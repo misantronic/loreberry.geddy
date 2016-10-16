@@ -9,7 +9,8 @@ function Embed(config) {
 Embed.prototype = {
     _config: {
         id: Number,
-        api: String
+        api: String,
+        baseUrl: String
     },
 
     _price: null,
@@ -62,8 +63,8 @@ Embed.prototype = {
         }.bind(this);
 
         return $.when(
-            $.get('./tpl/status.ejs'),
-            $.get('./tpl/newsletter.ejs')
+            $.get(this._config.baseUrl + '/tpl/status.ejs'),
+            $.get(this._config.baseUrl + '/tpl/newsletter.ejs')
         ).done(function (statusArr, newsletterArr) {
             parseTemplate('status', statusArr, '_price');
             parseTemplate('newsletter', newsletterArr);
