@@ -125,9 +125,23 @@ Embed.prototype = {
         this._ui.shares.text(price.shares);
         this._ui.startPrice.text(price.start_price + ' €');
         this._ui.minPrice.text(price.min_price + ' €');
-        this._ui.currentPrice.text(price.current_price + ' €');
+
+        this._ui.currentPrice.text(price.start_price + ' €');
 
         setTimeout(function () {
+            var d = price.start_price - price.current_price; // distance
+            var t = 800; // duration
+            var v = t / d; // velocity
+            var delay = v;
+
+            for (var current_price = price.start_price; current_price >= price.current_price; current_price--) {
+                setTimeout(function (newPrice) {
+                    this._ui.currentPrice.text(newPrice + ' €');
+                }.bind(this), delay, current_price);
+
+                delay += v;
+            }
+
             this._ui.barProgress.width(p + '%');
         }.bind(this), 750);
     },
