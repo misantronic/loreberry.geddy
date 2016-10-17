@@ -10,14 +10,19 @@ function Embed(config) {
     this._config = config;
 
     if (this._config.el) {
-        this._config.$el = $(this._config.el);
+        this.$el = $(this._config.el);
+    }
+
+    if(this._config.baseUrl) {
+        this._config.api = this._config.baseUrl + this._config.api;
     }
 }
 
 Embed.prototype = {
     _config: {
         id: Number,
-        api: String
+        api: String,
+        baseUrl: String
     },
 
     _price: null,
@@ -36,6 +41,8 @@ Embed.prototype = {
         form: '.js-form',
         textError: '.js-text-error'
     },
+
+    $el: null,
 
     init: function () {
         this.initTemplates();
@@ -82,7 +89,7 @@ Embed.prototype = {
 
         $wrapper.append(rendered);
 
-        this._config.$el.html($wrapper);
+        this.$el.html($wrapper);
 
         // Create UI
         _.each(this._ui, function (selector, name) {
