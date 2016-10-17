@@ -84,6 +84,8 @@ Embed.prototype = {
         var rendered = '';
 
         for(name in this._templates) {
+            if(!this._templates.hasOwnProperty(name)) continue;
+
             var template = this._templates[name];
             var context = this[template.context] || {};
 
