@@ -1,20 +1,23 @@
+var $ = require('jquery');
+var _ = require('underscore');
+
+require('../css/embed.scss');
+
+var statusTemplate = require('../tpl/status.ejs');
+var newsletterTemplate = require('../tpl/newsletter.ejs');
+
 function Embed(config) {
     this._config = config;
 
     if (this._config.el) {
         this._config.$el = $(this._config.el);
     }
-
-    if (this._config.api && this._config.baseUrl) {
-        this._config.api = this._config.baseUrl + this._config.api;
-    }
 }
 
 Embed.prototype = {
     _config: {
         id: Number,
-        api: String,
-        baseUrl: String
+        api: String
     },
 
     _price: null,
@@ -35,11 +38,12 @@ Embed.prototype = {
     },
 
     init: function () {
-        $.when(
-            this.loadStyles(),
-            this.loadTemplates(),
-            this.getPrice()
-        ).done(this._onLoaded.bind(this));
+        this.initTemplates();
+
+        this.getPrice().done(function() {
+            this.render();
+            this.polling();
+        }.bind(this));
 
         console.log(this);
 
@@ -59,29 +63,11 @@ Embed.prototype = {
             }.bind(this));
     },
 
-    loadStyles: function () {
-        $('.embed-styles').remove();
+    initTemplates: function () {
+        this._templates.status = statusTemplate;
+        this._templates.status.context = '_price';
 
-        $.get(this._config.baseUrl + '/embed.css').then(function (css) {
-            this._config.$el.after('<style class="embed-styles" type="text/css">'+ css +'</style>')
-        }.bind(this))
-    },
-
-    loadTemplates: function () {
-        this._templates = {};
-
-        const parseTemplate = function (key, arr, context) {
-            this._templates[key] = _.template(arr[0]);
-            this._templates[key].context = context;
-        }.bind(this);
-
-        return $.when(
-            $.get(this._config.baseUrl + '/tpl/status.ejs'),
-            $.get(this._config.baseUrl + '/tpl/newsletter.ejs')
-        ).done(function (statusArr, newsletterArr) {
-            parseTemplate('status', statusArr, '_price');
-            parseTemplate('newsletter', newsletterArr);
-        }.bind(this));
+        this._templates.newsletter = newsletterTemplate;
     },
 
     render: function () {
@@ -173,11 +159,6 @@ Embed.prototype = {
                 }
             }.bind(this))
             .always(this.polling.bind(this))
-    },
-
-    _onLoaded: function () {
-        this.render();
-        this.polling();
     }
 };
 

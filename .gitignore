@@ -1,5 +1,3 @@
 .idea
 node_modules
-public/index.ejs
-public/tpl
-public/embed.*
+public
