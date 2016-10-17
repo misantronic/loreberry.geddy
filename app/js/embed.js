@@ -1,5 +1,4 @@
 var $ = require('jquery');
-var _ = require('underscore');
 
 require('../css/embed.scss');
 
@@ -79,30 +78,38 @@ Embed.prototype = {
 
     render: function () {
         var $wrapper = $('<div class="embed-wrapper"></div>');
+        var name;
 
         // Render templates
-        var rendered = _.map(this._templates, function (template) {
-            const context = this[template.context] || {};
+        var rendered = '';
 
-            return template(context);
-        }, this);
+        for(name in this._templates) {
+            var template = this._templates[name];
+            var context = this[template.context] || {};
+
+            rendered += template(context);
+        }
 
         $wrapper.append(rendered);
 
         this.$el.html($wrapper);
 
         // Create UI
-        _.each(this._ui, function (selector, name) {
+        for(name in this._ui) {
+            if(!this._ui.hasOwnProperty(name)) continue;
+
+            var selector = this._ui[name];
+
             this._ui[name] = $(selector);
-        }, this);
+        }
 
         // Bind data
         this.renderPrices();
 
-        _.defer(function () {
+        setTimeout(function () {
             // Show wrapper
             $wrapper.addClass('is-show')
-        }.bind(this));
+        }, 0);
 
         // Initialize form
         this.initForm();
@@ -118,7 +125,7 @@ Embed.prototype = {
         this._ui.minPrice.text(price.min_price + ' €');
         this._ui.currentPrice.text(price.current_price + ' €');
 
-        _.delay(function () {
+        setTimeout(function () {
             this._ui.barProgress.width(p + '%');
         }.bind(this), 750);
     },
