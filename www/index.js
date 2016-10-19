@@ -13,7 +13,7 @@ app.set('port', (process.env.PORT || 5000));
 
 app.use(allowCors);
 
-app.use(timeout('60s'));
+app.use(timeout('90s'));
 app.use(compression());
 app.use(express.static(publicPath));
 

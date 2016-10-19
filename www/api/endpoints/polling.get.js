@@ -2,6 +2,10 @@ var api = require('../api');
 var events = require('../../db/events');
 
 module.exports = function (req, res) {
+    res.setTimeout(60 * 1000, function () {
+        api.write(res, {}, 200);
+    });
+
     events.listenTo('updatePrice', function (price) {
         api.write(res, {
             event: 'updatePrice',
