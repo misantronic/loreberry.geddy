@@ -1,5 +1,5 @@
-var api = require('../api');
-var events = require('../../db/events');
+const api = require('../api');
+const events = require('../../db/events');
 
 module.exports = function (req, res) {
     res.setTimeout(60 * 1000, function () {

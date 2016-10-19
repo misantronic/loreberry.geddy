@@ -2,7 +2,7 @@ const Promise = require('promise');
 const Mailchimp = require('mailchimp-api-v3');
 const setToken = require('./db/methods/setToken');
 
-var mailchimp = new Mailchimp(process.env.MAILCHIMP_API);
+const mailchimp = new Mailchimp(process.env.MAILCHIMP_API);
 
 module.exports = {
     list: {

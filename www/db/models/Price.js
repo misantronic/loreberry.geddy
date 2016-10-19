@@ -1,4 +1,4 @@
-var db = require('./../mongoose');
+const db = require('./../mongoose');
 
 module.exports = db.model('Prices', new db.Schema({
     _id: Number,

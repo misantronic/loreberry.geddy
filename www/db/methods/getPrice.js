@@ -1,5 +1,5 @@
-var Promise = require('promise');
-var PriceModel = require('./../models/Price');
+const Promise = require('promise');
+const PriceModel = require('./../models/Price');
 
 module.exports = function (id = process.env.PRICE_ID) {
     return new Promise(function (resolve, reject) {

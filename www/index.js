@@ -1,13 +1,13 @@
-var express = require('express');
-var timeout = require('connect-timeout');
-var compression = require('compression');
-var bodyParser = require('body-parser');
-var api = require('./api/api');
-var allowCors = require('./allowCors');
+const express = require('express');
+const timeout = require('connect-timeout');
+const compression = require('compression');
+const bodyParser = require('body-parser');
+const api = require('./api/api');
+const allowCors = require('./allowCors');
 
-var publicPath = __dirname + '/../public';
+const publicPath = __dirname + '/../public';
 
-var app = express();
+const app = express();
 
 app.set('port', (process.env.PORT || 5000));
 

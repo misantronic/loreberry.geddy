@@ -1,10 +1,10 @@
-var pool = {};
+const pool = {};
 
 module.exports = {
     pool: {},
 
     trigger: function (event, data) {
-        var listener = pool[event];
+        const listener = pool[event];
 
         if(listener) {
             listener(data);

@@ -1,6 +1,6 @@
-var Promise = require('promise');
-var Redis = require('ioredis');
-var redis = new Redis(process.env.REDIS_URL);
+const Promise = require('promise');
+const Redis = require('ioredis');
+const redis = new Redis(process.env.REDIS_URL);
 
 redis
     .on('connect', () => {

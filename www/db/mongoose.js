@@ -1,7 +1,7 @@
-var mongoose = require("mongoose");
+const mongoose = require("mongoose");
 
-var mongoURI   = process.env.MONGODB_URI;
-var connection = mongoose.connection;
+const mongoURI   = process.env.MONGODB_URI;
+const connection = mongoose.connection;
 
 if (!connection.readyState) {
     mongoose.connect(mongoURI, function (err, res) {

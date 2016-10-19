@@ -1,6 +1,6 @@
-var http = require('http');
+const http = require('http');
 
-var appUrl = 'http://loreberry-geddy.herokuapp.com/';
+const appUrl = 'http://loreberry-geddy.herokuapp.com/';
 
 console.log('Running keepalive...');
 

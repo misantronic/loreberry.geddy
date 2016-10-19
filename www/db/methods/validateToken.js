@@ -1,5 +1,5 @@
-var Promise = require('promise');
-var redis = require('./../redis');
+const Promise = require('promise');
+const redis = require('./../redis');
 
 module.exports = function (token, email) {
     return new Promise(function (resolve, reject) {
