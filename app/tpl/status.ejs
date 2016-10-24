@@ -1,23 +1,21 @@
 <div class="status">
-	<h2>Status</h2>
 	<div class="current-price">
-		<span class="js-current-price"></span>
-		<span class="label label-current">current</span>
-	</div>
-	<div class="shares">
-		<span class="num-shares js-shares"></span> total shares
+        Aktueller <span class="text-primary">Preis</span>: <span class="js-current-price price"></span>
 	</div>
 	<div class="progress">
 		<div class="start-price">
-			<span class="js-start-price"></span>
-			<span class="label label-start">start</span>
+			<span class="js-start-price price"></span>
 		</div>
 		<div class="bar">
 			<div class="bar-progress js-bar-progress"></div>
 		</div>
 		<div class="min-price">
-			<span class="js-min-price"></span>
-			<span class="label label-price">final</span>
+			<span class="js-min-price price"></span>
 		</div>
 	</div>
+    <div class="shares">
+        Registrierte <span class="text-primary">Uhrenfreunde:</span> <span class="num-shares js-shares"></span>
+    </div>
+    <div class="text-body"><%= texts.body %></div>
+    <h2 class="text-title"><%= texts.title %></h2>
 </div>

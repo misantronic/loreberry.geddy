@@ -1,149 +1,178 @@
+$color-primary: #cea468;
+
 .embed-wrapper {
-	font-family: sans-serif;
-	width: 100%;
-	max-width: 700px;
-	margin: 0 auto;
-	opacity: 0;
-	line-height: normal;
-	transform: translateX(-30px);
+    font-family: sans-serif;
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+    opacity: 0;
+    line-height: normal;
+    color: #FFFFFF;
+    transform: translateX(-30px);
 
-	transition: opacity 0.5s linear, transform 0.3s ease-out 0.1s;
+    transition: opacity 0.5s linear, transform 0.3s ease-out 0.1s;
 
-	&.is-show {
-		opacity: 1;
-		transform: translateX(0);
-	}
+    &.is-show {
+        opacity: 1;
+        transform: translateX(0);
+    }
 
-	span.label {
-		text-transform: uppercase;
-		font-size: 60%;
-		margin: 5px 0;
-	}
+    .price {
+        font-size: 30px;
 
-	.status {
-		margin-bottom: 50px;
+        &:before {
+            content: '€ ';
+            color: $color-primary;
+        }
+    }
 
-		.current-price {
-			font-size: 32px;
-			margin-bottom: 10px;
-			display: flex;
-			flex-direction: column-reverse;
-			align-items: center;
-		}
+    .text-primary {
+        color: $color-primary;
+    }
+    
+    .text-body {
+        text-align: center;
+        background: #FFFFFF;
+        color: #000000;
+        font-size: smaller;
+        padding: 5px;
+        margin: 20px 0;
+    }
 
-		.shares {
-			text-align: center;
-			margin-bottom: 10px;
-			text-transform: uppercase;
-		}
+    .text-form-head {
+        text-transform: uppercase;
+        margin-bottom: 3px;
+    }
 
-		.progress {
-			display: flex;
+    h2.text-title {
+        font-size: 40px;
+        text-align: center;
+        font-weight: normal;
+        margin: 0;
+    }
 
-			.bar {
-				margin: 0 10px;
-				flex: 1;
-				background: #EEE;
+    .status {
+        margin-bottom: 25px;
 
-				.bar-value {
-					text-align: center;
-					background: #FFF;
-				}
+        .current-price {
+            margin-bottom: 0;
+            text-align: center;
+            text-transform: uppercase;
+        }
 
-				.bar-progress {
-					width: 0;
-					height: 100%;
-					background: #CCC;
-					transition: width 0.8s ease-out;
-				}
-			}
+        .shares {
+            text-align: center;
+            text-transform: uppercase;
+        }
 
-			.start-price,
-			.min-price {
-				display: flex;
-				flex-direction: column;
-				align-items: center;
-				padding: 5px;
-			}
+        .progress {
+            display: flex;
+            margin-bottom: 5px;
 
-			.min-price {
-				justify-content: flex-end;
-			}
-		}
-	}
+            .bar {
+                margin: 0 10px;
+                flex: 1;
+                background: #FFFFFF;
 
-	.newsletter {
-		margin-bottom: 50px;
+                .bar-value {
+                    text-align: center;
+                    background: #FFF;
+                }
 
-		> .form {
-			display: flex;
-			flex-flow: row wrap;
+                .bar-progress {
+                    width: 0;
+                    height: 100%;
+                    background: $color-primary;
+                    transition: width 0.8s ease-out;
+                }
+            }
 
-			.form-control {
-				box-sizing: border-box;
-				padding: 8px 10px;
-				margin-bottom: 10px;
-				border: 1px solid #CCC;
-				font-size: 14px;
-				opacity: 1;
+            .start-price,
+            .min-price {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                padding: 5px;
+            }
 
-				transition: opacity 0.3s linear;
+            .min-price {
+                justify-content: flex-end;
+            }
+        }
+    }
 
-				&[type="text"],
-				&[type="email"] {
-					width: 20px;
-				}
+    .newsletter {
+        margin-bottom: 50px;
 
-				&:focus {
-					outline: none;
-				}
-			}
+        > .form {
+            display: flex;
+            flex-flow: row wrap;
 
-			.form-control.email {
-				flex: 1 100%;
-			}
+            .form-control {
+                box-sizing: border-box;
+                padding: 8px 10px;
+                margin-bottom: 10px;
+                border: 1px solid #CCC;
+                font-size: 14px;
+                opacity: 0.85;
 
-			.form-control.firstname {
-				flex: 0 50%;
-			}
+                transition: opacity 0.3s linear;
 
-			.form-control.lastname {
-				flex: 0 calc(50% - 10px);
-				margin-left: 10px;
-			}
+                &[type="text"],
+                &[type="email"] {
+                    width: 20px;
+                }
 
-			.form-control.submit {
-				flex: 1 100%;
-			}
-		}
+                &:focus {
+                    outline: none;
+                }
+            }
 
-		.text-error,
-		.text-success {
-			display: none;
-			line-height: 150%;
-		}
-	}
+            .form-control.email {
+                flex: 1 100%;
+            }
 
-	.newsletter.is-loading {
-		pointer-events: none;
+            .form-control.firstname {
+                flex: 0 50%;
+            }
 
-		.form-control {
-			opacity: 0.6;
-		}
-	}
+            .form-control.lastname {
+                flex: 0 calc(50% - 10px);
+                margin-left: 10px;
+            }
 
-	.newsletter.is-success {
-		.form {
-			display: none;
-		}
+            .form-control.submit {
+                flex: 1 100%;
+            }
+        }
 
-		.text-success {
-			display: block;
-		}
-	}
+        .text-error,
+        .text-success {
+            display: none;
+            line-height: 150%;
+        }
+    }
 
-	.newsletter.is-error .text-error {
-		display: block;
-		color: #CC0000;
-	}
+    .newsletter.is-loading {
+        pointer-events: none;
+
+        .form-control {
+            opacity: 0.6;
+        }
+    }
+
+    .newsletter.is-success {
+        .form {
+            display: none;
+        }
+
+        .text-success {
+            display: block;
+        }
+    }
+
+    .newsletter.is-error .text-error {
+        display: block;
+        color: #CC0000;
+    }
 }

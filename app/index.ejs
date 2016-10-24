@@ -5,14 +5,19 @@
 	<title></title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
-<body>
+<body style="background: #2a2925;">
 	<div id="embed-output"></div>
 	<script>
 		var EmbedConfig = {
-			baseUrl: 'http://loreberry-geddy.herokuapp.com',
+			//baseUrl: http://loreberry-geddy.herokuapp.com',
 			api: '/api',
 			id: 1,
-			el: '#embed-output'
+			el: '#embed-output',
+			texts: {
+				title: 'Daye / Turner<br><span class="text-primary">Beteigeuze</span>',
+                formHead: 'Sichere jetzt deinen <span class="text-primary">exklusiven Deal</span>',
+                body: 'Melde dich zum Newsletter an, um den Preis einer Daye / Turner Beteigeuze Arbanduhr zu verringern.<br>Für jede Registrierung wird der Preis um 10 Cent reduziert. Bis der Zielpreis von € {min_price} erreicht ist.'
+			}
 		};
 	</script>
 </body>

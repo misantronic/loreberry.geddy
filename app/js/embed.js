@@ -21,7 +21,12 @@ Embed.prototype = {
     _config: {
         id: Number,
         api: String,
-        baseUrl: String
+        baseUrl: String,
+        texts: {
+            title: String,
+            formHead: String,
+            body: String
+        }
     },
 
     _price: null,
@@ -29,6 +34,7 @@ Embed.prototype = {
         status: null,
         newsletter: null
     },
+    _templateContext: {},
 
     _ui: {
         shares: '.js-shares',
@@ -63,17 +69,31 @@ Embed.prototype = {
 
         return $.get(this._config.api + '/price/' + id)
             .then(function (price) {
-                this._price = price;
+                this.setPrice(price);
 
                 return price;
             }.bind(this));
     },
 
+    setPrice: function (data) {
+        var self = this;
+
+        this._price = data;
+
+        this._templateContext.texts = {};
+        this._templateContext.texts.title = this._config.texts.title;
+        this._templateContext.texts.body = this._config.texts.body.replace(/{(.*?)}/g, function (str, $1) {
+            return self._price[$1];
+        });
+        this._templateContext.texts.formHead = this._config.texts.formHead;
+    },
+
     initTemplates: function () {
         this._templates.status = statusTemplate;
-        this._templates.status.context = '_price';
+        this._templates.status.context = '_templateContext';
 
         this._templates.newsletter = newsletterTemplate;
+        this._templates.newsletter.context = '_templateContext';
     },
 
     render: function () {
@@ -123,10 +143,10 @@ Embed.prototype = {
         var p = Math.round((price.start_price - price.current_price) / (price.start_price - price.min_price) * 100);
 
         this._ui.shares.text(price.shares);
-        this._ui.startPrice.text(price.start_price + ' €');
-        this._ui.minPrice.text(price.min_price + ' €');
+        this._ui.startPrice.text(price.start_price);
+        this._ui.minPrice.text(price.min_price);
 
-        this._ui.currentPrice.text(price.start_price + ' €');
+        this._ui.currentPrice.text(price.start_price);
 
         setTimeout(function () {
             var d = price.start_price - price.current_price; // distance
@@ -136,7 +156,7 @@ Embed.prototype = {
 
             for (var current_price = price.start_price; current_price >= price.current_price; current_price--) {
                 setTimeout(function (newPrice) {
-                    this._ui.currentPrice.text(newPrice + ' €');
+                    this._ui.currentPrice.text(newPrice);
                 }.bind(this), delay, current_price);
 
                 delay += v;
@@ -182,7 +202,7 @@ Embed.prototype = {
         return $.get(this._config.api + '/polling')
             .done(function (response) {
                 if (response.event === 'updatePrice') {
-                    this._price = response.data;
+                    this.setPrice(response.data);
 
                     // Update properties
                     this.renderPrices();
