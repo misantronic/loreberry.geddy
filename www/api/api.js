@@ -7,6 +7,7 @@ module.exports = {
         app.get('/api/polling', require('./endpoints/polling.get'));
         app.get('/api/price/:id', require('./endpoints/price.get'));
         app.get('/api/mailchimp', require('./endpoints/mailchimp.get'));
+        app.get('/api/mailchimp/confirm', require('./endpoints/mailchimp.confirm.get'));
 
         // POST
         app.post('/api/subscribe', require('./endpoints/subscribe.post'));
