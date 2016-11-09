@@ -12,7 +12,7 @@ function Embed(config) {
         this.$el = $(this._config.el);
     }
 
-    if(this._config.baseUrl) {
+    if (this._config.baseUrl) {
         this._config.api = this._config.baseUrl + this._config.api;
     }
 }
@@ -26,7 +26,8 @@ Embed.prototype = {
             title: String,
             formHead: String,
             body: String
-        }
+        },
+        showForm: true
     },
 
     _price: null,
@@ -52,7 +53,7 @@ Embed.prototype = {
     init: function () {
         this.initTemplates();
 
-        this.getPrice().done(function() {
+        this.getPrice().done(function () {
             this.render();
             this.polling();
         }.bind(this));
@@ -92,8 +93,10 @@ Embed.prototype = {
         this._templates.status = statusTemplate;
         this._templates.status.context = '_templateContext';
 
-        this._templates.newsletter = newsletterTemplate;
-        this._templates.newsletter.context = '_templateContext';
+        if (this._config.showForm) {
+            this._templates.newsletter = newsletterTemplate;
+            this._templates.newsletter.context = '_templateContext';
+        }
     },
 
     render: function () {
@@ -103,8 +106,8 @@ Embed.prototype = {
         // Render templates
         var rendered = '';
 
-        for(name in this._templates) {
-            if(!this._templates.hasOwnProperty(name)) continue;
+        for (name in this._templates) {
+            if (!this._templates.hasOwnProperty(name) || !this._templates[name]) continue;
 
             var template = this._templates[name];
             var context = this[template.context] || {};
@@ -117,8 +120,8 @@ Embed.prototype = {
         this.$el.html($wrapper);
 
         // Create UI
-        for(name in this._ui) {
-            if(!this._ui.hasOwnProperty(name)) continue;
+        for (name in this._ui) {
+            if (!this._ui.hasOwnProperty(name)) continue;
 
             var selector = this._ui[name];
 
@@ -133,8 +136,10 @@ Embed.prototype = {
             $wrapper.addClass('is-show')
         }, 0);
 
-        // Initialize form
-        this.initForm();
+        if (this._config.showForm) {
+            // Initialize form
+            this.initForm();
+        }
     },
 
     renderPrices: function () {
