@@ -57,10 +57,10 @@ Embed.prototype = {
 
     init: function () {
         this.initTemplates();
+        this.polling();
 
         this.getPrice().done(function () {
             this.render();
-            this.polling();
         }.bind(this));
 
         return this;
