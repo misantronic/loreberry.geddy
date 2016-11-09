@@ -33,10 +33,6 @@ app.get('/', function (request, response) {
     response.render('index');
 });
 
-app.get('/thankyou', function (request, response) {
-    response.render('index');
-});
-
 api.init(app);
 
 app.listen(app.get('port'), function () {
