@@ -168,7 +168,7 @@ Embed.prototype = {
         this._ui.currentPrice.text(this.formatPrice(price.start_price));
 
         setTimeout(function () {
-            var d = price.start_price - price.current_price; // distance
+            var d = price.start_price - Math.floor(price.current_price); // distance
             var t = 800; // duration
             var v = t / d; // velocity
             var delay = v;
