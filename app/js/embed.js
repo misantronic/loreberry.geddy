@@ -15,6 +15,8 @@ function Embed(config) {
     if (this._config.baseUrl) {
         this._config.api = this._config.baseUrl + this._config.api;
     }
+
+    console.log(this);
 }
 
 Embed.prototype = {
@@ -38,6 +40,8 @@ Embed.prototype = {
     },
     _templateContext: {},
 
+    _timeouts: [],
+
     _ui: {
         shares: '.js-shares',
         currentPrice: '.js-current-price',
@@ -58,8 +62,6 @@ Embed.prototype = {
             this.render();
             this.polling();
         }.bind(this));
-
-        console.log(this);
 
         return this;
     },
@@ -94,13 +96,27 @@ Embed.prototype = {
     formatPrice: function (price) {
         price = Math.round(Number(price) * 100) / 100;
 
-        return price.toString().replace(/(\d+)\.(\d+)/, function (str, $1, $2) {
-            if (Number($2) < 10) {
-                $2 = $2 + '0';
-            }
+        price = price
+            .toString()
+            .replace(/(\d+)\.(\d+)|(\d+)/, function (str, $1, $2, $3) {
+                var num = 0;
 
-            return $1 + ',' + $2;
-        });
+                if ($1 && $2) {
+                    if(Number($2) < 10) {
+                        $2 = $2 + '0';
+                    }
+
+                    num = $1 + ',' + $2;
+                } else {
+                    num = $3 + ',00';
+                }
+
+                return num;
+            });
+
+        // console.log(price);
+
+        return price;
     },
 
     initTemplates: function () {
@@ -166,27 +182,40 @@ Embed.prototype = {
         this._ui.minPrice.text(this.formatPrice(price.min_price));
 
         this._ui.currentPrice.text(this.formatPrice(price.start_price));
+        this._ui.barProgress.width('0%');
 
-        setTimeout(function () {
-            var d = price.start_price - Math.floor(price.current_price); // distance
-            var t = 800; // duration
-            var v = t / d; // velocity
-            var delay = v;
+        for (var i = 0; i < this._timeouts.length; i++) {
+            clearTimeout(this._timeouts[i]);
+        }
 
-            for (var current_price = price.start_price; current_price >= price.current_price; current_price--) {
-                setTimeout(function (newPrice) {
-                    this._ui.currentPrice.text(newPrice + ',00');
-                }.bind(this), delay, current_price);
-
-                delay += v;
-            }
-
+        this._timeouts.push(
             setTimeout(function () {
-                this._ui.currentPrice.text(this.formatPrice(price.current_price));
-            }.bind(this), delay + 16);
+                var d = price.start_price - Math.floor(price.current_price); // distance
+                var t = 800; // duration
+                var v = t / d; // velocity
+                var delay = v;
 
-            this._ui.barProgress.width(p + '%');
-        }.bind(this), 750);
+                for (var current_price = price.start_price; current_price >= price.current_price; current_price--) {
+                    this._timeouts.push(
+                        setTimeout(function (newPrice) {
+                            this._ui.currentPrice.text(newPrice + ',00');
+                        }.bind(this), delay, current_price)
+                    );
+
+                    delay += v;
+                }
+
+                this._timeouts.push(
+                    setTimeout(function () {
+                        this._ui.currentPrice.text(this.formatPrice(price.current_price));
+
+                        this._timeouts = [];
+                    }.bind(this), delay + 16)
+                );
+
+                this._ui.barProgress.width(p + '%');
+            }.bind(this), 750)
+        );
     },
 
     initForm: function () {
