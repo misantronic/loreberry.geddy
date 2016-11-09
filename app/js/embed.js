@@ -174,7 +174,6 @@ Embed.prototype = {
 
     renderPrices: function () {
         var price = this._price;
-
         var p = Math.round((price.start_price - price.current_price) / (price.start_price - price.min_price) * 100);
 
         this._ui.shares.text(price.shares);
@@ -182,7 +181,6 @@ Embed.prototype = {
         this._ui.minPrice.text(this.formatPrice(price.min_price));
 
         this._ui.currentPrice.text(this.formatPrice(price.start_price));
-        this._ui.barProgress.width('0%');
 
         for (var i = 0; i < this._timeouts.length; i++) {
             clearTimeout(this._timeouts[i]);
@@ -216,6 +214,17 @@ Embed.prototype = {
                 this._ui.barProgress.width(p + '%');
             }.bind(this), 750)
         );
+    },
+
+    updatePrices: function () {
+        setTimeout(function () {
+            var price = this._price;
+            var p = Math.round((price.start_price - price.current_price) / (price.start_price - price.min_price) * 100);
+
+            this._ui.shares.text(price.shares);
+            this._ui.currentPrice.text(this.formatPrice(price.current_price));
+            this._ui.barProgress.width(p + '%');
+        }.bind(this), 750);
     },
 
     initForm: function () {
@@ -262,7 +271,7 @@ Embed.prototype = {
                     this.setPrice(response.data);
 
                     // Update properties
-                    this.renderPrices();
+                    this.updatePrices();
                 }
             }.bind(this))
             .always(this.polling.bind(this))
