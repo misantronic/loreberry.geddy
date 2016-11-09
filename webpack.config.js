@@ -26,6 +26,12 @@ module.exports = {
 			inject: true
 		}),
 
+		new HtmlWebpackPlugin({
+			template: __dirname + '/app/redirect.ejs',
+			filename: 'redirect.html',
+			inject: false
+		}),
+
 		new CleanWebpackPlugin(['public'])
 	],
 
