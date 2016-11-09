@@ -4,13 +4,42 @@
     <meta charset="UTF-8">
     <title>Sie werden weiter geleitet...</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style type="text/css">
+        body {
+            padding-top: 35px;
+            font-family: Arial, sans-serif;
+            font-size: 18px;
+        }
+    </style>
 </head>
 <body>
+<center>
+    Sie werden in <span id="counter"></span> Sekunden weiter geleitet...
+</center>
+
 <script>
     var url = location.href.split('?url=')[1];
+    var counter = document.getElementById('counter');
 
     setTimeout(function () {
-        location.href = decodeURI(url);
+        counter.innerText = 3;
+    }, 0);
+
+    setTimeout(function () {
+        counter.innerText = 2;
+    }, 1000);
+
+    setTimeout(function () {
+        counter.innerText = 1;
+    }, 2000);
+
+    setTimeout(function () {
+        counter.innerText = 0;
+
+        if (url) {
+            location.href = decodeURI(url);
+        }
     }, 3000);
 </script>
 </body>
