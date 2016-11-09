@@ -1,9 +1,9 @@
 const Promise = require('promise');
 const redis = require('./../redis');
 
-module.exports = function (token, email) {
+module.exports = function (token, email, type) {
     return new Promise(function (resolve, reject) {
-        const key = 'token.' + token;
+        const key = 'token.' + type +'.' + token;
 
         redis
             .get(key)

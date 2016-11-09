@@ -12,7 +12,8 @@ module.exports = function (value, token = null) {
             token = crypto.createHash('sha1').update(date + random).digest('hex');
         }
 
-        redis.set('token.'+ token, value, 60 * 60 * 24 * 30);
+        redis.set('token.subscribe.'+ token, value, 60 * 60 * 24 * 30);
+        redis.set('token.unsubscribe.'+ token, value, 60 * 60 * 24 * 30);
 
         resolve(token, value);
     });
