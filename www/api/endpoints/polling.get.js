@@ -3,7 +3,6 @@ const events = require('../../db/events');
 
 module.exports = function (req, res) {
     res.setTimeout(20 * 1000, function () {
-        console.log('timeout');
         api.write(res, {}, 200);
     });
 

@@ -89,6 +89,18 @@ Embed.prototype = {
         this._templateContext.texts.formHead = this._config.texts.formHead;
     },
 
+    formatPrice: function (price) {
+        price = Math.round(Number(price) * 100) / 100;
+
+        return price.toString().replace(/(\d+)\.(\d+)/, function (str, $1, $2) {
+            if (Number($2) < 10) {
+                $2 = $2 + '0';
+            }
+
+            return $1 + ',' + $2;
+        });
+    },
+
     initTemplates: function () {
         this._templates.status = statusTemplate;
         this._templates.status.context = '_templateContext';
@@ -148,10 +160,10 @@ Embed.prototype = {
         var p = Math.round((price.start_price - price.current_price) / (price.start_price - price.min_price) * 100);
 
         this._ui.shares.text(price.shares);
-        this._ui.startPrice.text(price.start_price);
-        this._ui.minPrice.text(price.min_price);
+        this._ui.startPrice.text(this.formatPrice(price.start_price));
+        this._ui.minPrice.text(this.formatPrice(price.min_price));
 
-        this._ui.currentPrice.text(price.start_price);
+        this._ui.currentPrice.text(this.formatPrice(price.start_price));
 
         setTimeout(function () {
             var d = price.start_price - price.current_price; // distance
@@ -161,11 +173,15 @@ Embed.prototype = {
 
             for (var current_price = price.start_price; current_price >= price.current_price; current_price--) {
                 setTimeout(function (newPrice) {
-                    this._ui.currentPrice.text(newPrice);
+                    this._ui.currentPrice.text(newPrice + ',00');
                 }.bind(this), delay, current_price);
 
                 delay += v;
             }
+
+            setTimeout(function () {
+                this._ui.currentPrice.text(this.formatPrice(price.current_price));
+            }.bind(this), delay + 16);
 
             this._ui.barProgress.width(p + '%');
         }.bind(this), 750);
@@ -193,8 +209,8 @@ Embed.prototype = {
                         if (res.error) {
                             var text = 'Bei der Registrierung ist ein Fehler aufgetreten.';
 
-                            if(res.code === 501) text = 'Bitte gib eine E-Mail Adresse an.';
-                            if(res.code === 502) text = 'Du bist bereits für den Newsletter registriert.';
+                            if (res.code === 501) text = 'Bitte gib eine E-Mail Adresse an.';
+                            if (res.code === 502) text = 'Du bist bereits für den Newsletter registriert.';
 
                             this._ui.textError.text(text);
                             this._ui.newsletter.addClass('is-error');
