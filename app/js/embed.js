@@ -191,7 +191,12 @@ Embed.prototype = {
                         this._ui.textError.text('');
 
                         if (res.error) {
-                            this._ui.textError.text(res.error);
+                            var text = 'Bei der Registrierung ist ein Fehler aufgetreten.';
+
+                            if(res.code === 501) text = 'Bitte gib eine E-Mail Adresse an.';
+                            if(res.code === 502) text = 'Du bist bereits für den Newsletter registriert.';
+
+                            this._ui.textError.text(text);
                             this._ui.newsletter.addClass('is-error');
                         }
                     }.bind(this))
