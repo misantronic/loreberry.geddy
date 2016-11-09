@@ -1,16 +1,13 @@
 <div class="newsletter js-newsletter">
-	<div class="text-form-head"><%= texts.formHead %></div>
+    <div class="text-form-head"><%= texts.formHead %></div>
 
-	<p class="text-error js-text-error"></p>
-	<p class="text-success">
-		Thanks for registering for our newsletter.<br>
-		Please check your inbox to confirm your registration.
-	</p>
+    <p class="text-error js-text-error"></p>
+    <p class="text-success"><%= texts.newsletterSuccess %></p>
 
-	<form action="" class="form js-form">
-		<input type="email" class="form-control email js-email" name="email" placeholder="E-Mail..." required>
-		<input type="text" class="form-control firstname js-firstname" name="firstname" placeholder="Vorname...">
-		<input type="text" class="form-control lastname js-lastname" name="lastname" placeholder="Nachname...">
-		<input type="submit" value="Registrieren" class="form-control submit js-submit">
-	</form>
+    <form action="" class="form js-form">
+        <input type="email" class="form-control email js-email" name="email" placeholder="E-Mail..." required>
+        <input type="text" class="form-control firstname js-firstname" name="firstname" placeholder="Vorname...">
+        <input type="text" class="form-control lastname js-lastname" name="lastname" placeholder="Nachname...">
+        <input type="submit" value="Registrieren" class="form-control submit js-submit">
+    </form>
 </div>

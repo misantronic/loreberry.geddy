@@ -25,7 +25,8 @@ Embed.prototype = {
         texts: {
             title: String,
             formHead: String,
-            body: String
+            body: String,
+            newsletterSuccess: String
         },
         showForm: true
     },
@@ -87,6 +88,7 @@ Embed.prototype = {
             return self._price[$1];
         });
         this._templateContext.texts.formHead = this._config.texts.formHead;
+        this._templateContext.texts.newsletterSuccess = this._config.texts.newsletterSuccess;
     },
 
     formatPrice: function (price) {
