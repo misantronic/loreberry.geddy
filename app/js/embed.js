@@ -34,7 +34,11 @@ Embed.prototype = {
             body: '',
             newsletterSuccess: '',
             currentPrice: '',
-            users: ''
+            users: '',
+            placeholderEmail: '',
+            placeholderFirstname: '',
+            placeholderLastname: '',
+            placeholderRegister: ''
         },
         showForm: true
     },
@@ -117,6 +121,22 @@ Embed.prototype = {
                     if(translations['embed.newsletter_success']) {
                         this._config.texts.newsletterSuccess = translations['embed.newsletter_success'];
                     }
+
+                    if(translations['embed.placeholder_firstname']) {
+                        this._config.texts.placeholderFirstname = translations['embed.placeholder_firstname'];
+                    }
+
+                    if(translations['embed.placeholder_lastname']) {
+                        this._config.texts.placeholderLastname = translations['embed.placeholder_lastname'];
+                    }
+
+                    if(translations['embed.placeholder_email']) {
+                        this._config.texts.placeholderEmail = translations['embed.placeholder_email'];
+                    }
+
+                    if(translations['embed.placeholder_register']) {
+                        this._config.texts.placeholderRegister = translations['embed.placeholder_register'];
+                    }
                 }.bind(this));
         }
 
@@ -132,15 +152,10 @@ Embed.prototype = {
 
         this._price = data;
 
-        this._templateContext.texts = {};
-        this._templateContext.texts.title = this._config.texts.title;
+        this._templateContext.texts = _.clone(this._config.texts);
         this._templateContext.texts.body = this._config.texts.body.replace(/{(.*?)}/g, function (str, $1) {
             return self._price[$1];
         });
-        this._templateContext.texts.formHead = this._config.texts.formHead;
-        this._templateContext.texts.newsletterSuccess = this._config.texts.newsletterSuccess;
-        this._templateContext.texts.currentPrice = this._config.texts.currentPrice;
-        this._templateContext.texts.users = this._config.texts.users;
     },
 
     formatPrice: function (price) {
