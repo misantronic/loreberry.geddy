@@ -12,6 +12,9 @@ module.exports = {
         // POST
         app.post('/api/subscribe', require('./endpoints/subscribe.post'));
         app.post('/api/mailchimp', require('./endpoints/mailchimp.post.js'));
+
+        // TRANSLATIONS
+        app.get('/api/translations', require('./endpoints/translations.get'));
     },
 
     write: function (res, data, status = 200) {

@@ -4,9 +4,12 @@ require('../css/embed.scss');
 
 var statusTemplate = require('../tpl/status.ejs');
 var newsletterTemplate = require('../tpl/newsletter.ejs');
+var _ = require('underscore');
 
 function Embed(config) {
-    this._config = config;
+    this._config = _.defaults(config, this._config);
+
+    console.log(this._config);
 
     if (this._config.el) {
         this.$el = $(this._config.el);
@@ -21,14 +24,17 @@ function Embed(config) {
 
 Embed.prototype = {
     _config: {
-        id: Number,
-        api: String,
-        baseUrl: String,
+        id: 0,
+        postId: 0,
+        api: '',
+        baseUrl: '',
         texts: {
-            title: String,
-            formHead: String,
-            body: String,
-            newsletterSuccess: String
+            title: '',
+            formHead: '',
+            body: '',
+            newsletterSuccess: '',
+            currentPrice: '',
+            users: ''
         },
         showForm: true
     },
@@ -59,9 +65,12 @@ Embed.prototype = {
         this.initTemplates();
         this.polling();
 
-        this.getPrice().done(function () {
-            this.render();
-        }.bind(this));
+        this.getTranslations()
+            .done(function () {
+                this.getPrice().done(function () {
+                    this.render();
+                }.bind(this));
+            }.bind(this));
 
         return this;
     },
@@ -79,6 +88,45 @@ Embed.prototype = {
             }.bind(this));
     },
 
+    getTranslations: function () {
+        var postId = this._config.postId;
+
+        if (postId) {
+            return $.get(this._config.api + '/translations?post_id=' + postId)
+                .then(function (translations) {
+                    if (translations['embed.title']) {
+                        this._config.texts.title = translations['embed.title'];
+                    }
+
+                    if(translations['embed.form']) {
+                        this._config.texts.formHead = translations['embed.form'];
+                    }
+
+                    if(translations['embed.body']) {
+                        this._config.texts.body = translations['embed.body'];
+                    }
+
+                    if(translations['embed.current_price']) {
+                        this._config.texts.currentPrice = translations['embed.current_price'];
+                    }
+
+                    if(translations['embed.users']) {
+                        this._config.texts.users = translations['embed.users'];
+                    }
+
+                    if(translations['embed.newsletter_success']) {
+                        this._config.texts.newsletterSuccess = translations['embed.newsletter_success'];
+                    }
+                }.bind(this));
+        }
+
+        var deferred = $.Deferred();
+
+        deferred.resolve();
+
+        return deferred.promise();
+    },
+
     setPrice: function (data) {
         var self = this;
 
@@ -91,6 +139,8 @@ Embed.prototype = {
         });
         this._templateContext.texts.formHead = this._config.texts.formHead;
         this._templateContext.texts.newsletterSuccess = this._config.texts.newsletterSuccess;
+        this._templateContext.texts.currentPrice = this._config.texts.currentPrice;
+        this._templateContext.texts.users = this._config.texts.users;
     },
 
     formatPrice: function (price) {
@@ -102,7 +152,7 @@ Embed.prototype = {
                 var num = 0;
 
                 if ($1 && $2) {
-                    if(Number($2) < 10) {
+                    if (Number($2) < 10) {
                         $2 = $2 + '0';
                     }
 
