@@ -335,7 +335,14 @@ Embed.prototype = {
             }.bind(this));
     },
 
-    polling: function () {
+    polling: function (e, str, res) {
+        e = e || {};
+        res = res || {};
+
+        if (e.status === 0 || res.status === 404) {
+            return;
+        }
+
         return $.get(this._config.api + '/polling')
             .done(function (response) {
                 if (response.event === 'updatePrice') {
