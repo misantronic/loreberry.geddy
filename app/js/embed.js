@@ -9,14 +9,20 @@ var _ = require('underscore');
 function Embed(config) {
     this._config = _.defaults(config, this._config);
 
-    console.log(this._config);
+    // console.log(this._config);
 
     if (this._config.el) {
         this.$el = $(this._config.el);
     }
 
-    if (this._config.baseUrl) {
-        this._config.api = this._config.baseUrl + this._config.api;
+    var baseUrl = this._config.baseUrl;
+
+    if (baseUrl) {
+        if (baseUrl.substr(baseUrl.length - 1, 1) === '/') {
+            baseUrl = baseUrl.substr(0, baseUrl.length - 1);
+        }
+
+        this._config.api = baseUrl + this._config.api;
     }
 
     console.log(this);
@@ -102,39 +108,39 @@ Embed.prototype = {
                         this._config.texts.title = translations['embed.title'];
                     }
 
-                    if(translations['embed.form']) {
+                    if (translations['embed.form']) {
                         this._config.texts.formHead = translations['embed.form'];
                     }
 
-                    if(translations['embed.body']) {
+                    if (translations['embed.body']) {
                         this._config.texts.body = translations['embed.body'];
                     }
 
-                    if(translations['embed.current_price']) {
+                    if (translations['embed.current_price']) {
                         this._config.texts.currentPrice = translations['embed.current_price'];
                     }
 
-                    if(translations['embed.users']) {
+                    if (translations['embed.users']) {
                         this._config.texts.users = translations['embed.users'];
                     }
 
-                    if(translations['embed.newsletter_success']) {
+                    if (translations['embed.newsletter_success']) {
                         this._config.texts.newsletterSuccess = translations['embed.newsletter_success'];
                     }
 
-                    if(translations['embed.placeholder_firstname']) {
+                    if (translations['embed.placeholder_firstname']) {
                         this._config.texts.placeholderFirstname = translations['embed.placeholder_firstname'];
                     }
 
-                    if(translations['embed.placeholder_lastname']) {
+                    if (translations['embed.placeholder_lastname']) {
                         this._config.texts.placeholderLastname = translations['embed.placeholder_lastname'];
                     }
 
-                    if(translations['embed.placeholder_email']) {
+                    if (translations['embed.placeholder_email']) {
                         this._config.texts.placeholderEmail = translations['embed.placeholder_email'];
                     }
 
-                    if(translations['embed.placeholder_register']) {
+                    if (translations['embed.placeholder_register']) {
                         this._config.texts.placeholderRegister = translations['embed.placeholder_register'];
                     }
                 }.bind(this));
