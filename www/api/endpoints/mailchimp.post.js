@@ -9,11 +9,11 @@ module.exports = function (req, res) {
     const body = req.body || {};
     const type = body.type; // subscribe | unsubscribe
 
+    console.log('POST /api/mailchimp', body);
+
     if (!body.data) {
         return api.write(res, { error: 'Missing payload' }, 500);
     }
-
-    console.log('POST /api/mailchimp', body);
 
     const token = body.data.merges.TOKEN;
     const email = body.data.email;
