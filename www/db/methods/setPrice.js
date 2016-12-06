@@ -3,6 +3,8 @@ const _ = require('underscore');
 const PriceModel = require('./../models/Price');
 
 module.exports = function (price = { id: null, start_price: null, min_price: null, current_price: null, shares: null }) {
+    console.log('setPrice()', price);
+
     return new Promise(function (resolve, reject) {
 
         const $setPrice = {};

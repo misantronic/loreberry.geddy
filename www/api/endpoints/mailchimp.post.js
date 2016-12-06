@@ -21,6 +21,8 @@ module.exports = function (req, res) {
     validateToken(token, email, type)
         .then(tokenFound => {
             if (tokenFound) {
+                console.log('--> token found.');
+
                 if (type === 'subscribe') {
                     updatePrice(-0.1, 1)
                         .then(() => {

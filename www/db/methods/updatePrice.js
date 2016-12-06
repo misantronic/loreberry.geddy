@@ -4,6 +4,8 @@ const setPrice = require('./setPrice');
 const events = require('../events');
 
 module.exports = function (addPrice, addShares, addObj = {}) {
+    console.log('updatePrice(' + addPrice + ', ' + addShares + ')');
+
     return new Promise(function (resolve, reject) {
         getPrice()
             .then(price => {
