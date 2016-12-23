@@ -17,6 +17,7 @@ module.exports = function (req, res) {
 
     const token = body.data.merges.TOKEN;
     const email = body.data.email;
+    const priceAdd = process.env.PRICE_ADD || 0.1;
 
     validateToken(token, email, type)
         .then(tokenFound => {
@@ -24,7 +25,7 @@ module.exports = function (req, res) {
                 console.log('--> token found.');
 
                 if (type === 'subscribe') {
-                    updatePrice(-0.1, 1)
+                    updatePrice(-priceAdd, 1)
                         .then(() => {
                             delToken(token, type);
 
@@ -34,7 +35,7 @@ module.exports = function (req, res) {
                 }
 
                 if (type === 'unsubscribe') {
-                    updatePrice(0.1, -1)
+                    updatePrice(priceAdd, -1)
                         .then(() => {
                             delToken(token, type);
 
